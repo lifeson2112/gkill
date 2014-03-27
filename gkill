@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use CGI::Ex::Dump qw(debug);
+
+my $grep = $ARGV[0];
+$grep = quotemeta($grep);
+my @proc_array = `ps aux | grep -i $grep`;
+my @lines_array = grep(m/$grep/i , @proc_array);
+foreach my $line (@lines_array) {
+    next if $line =~ m/grep -i $grep/;
+    my ($proc_num) = $line =~ m/[a-z0-9_]*\s*([^\s]*)/i;
+    next if $proc_num eq $$;
+    `sudo kill -9 $proc_num` if $proc_num;
+}
