@@ -3,8 +3,6 @@
 use strict;
 use warnings;
 
-use CGI::Ex::Dump qw(debug);
-
 my $grep = $ARGV[0];
 $grep = quotemeta($grep);
 my @proc_array = `ps aux | grep -i $grep`;
